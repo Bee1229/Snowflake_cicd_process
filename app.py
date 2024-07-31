@@ -1,16 +1,16 @@
-from __future__ import annotations
-from snowflake.snowpark.session import Session # type: ignore
-from snowflake.snowpark import dataframe
+from snowflake.snowpark.session import Session 
+from snowflake.snowpark.session import Session 
+from snowflake.snowpark import DataFrame 
 from snowflake.snowpark.functions import col
+import json
 
-def hello(session: Session) -> dataframe:
-    df= session.table("product")
+def hello(session: Session) -> DataFrame:
+    df = session.table("demodb.dev.customers")
+    #df = df.groupBy("STATE").count()
     return df
 
+# For local debugging
 if __name__ == "__main__":
-    from snowflake.snowpark.mock.mock_connection import MockServerConnection
-    import init_local
-
-    session = Session(MockServerConnection())
-    session = init_local.init(session)
-    print(hello(session).show())
+    session = Session.builder.configs(json.load(
+      open("/change_your_path/snowflake_connection.json"))).create()
+    print (hello (session).show())
